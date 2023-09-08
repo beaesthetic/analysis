@@ -3,7 +3,9 @@ name: Build and Publish Docker Image
 on:
   push:
     branches:
-      - main  # Change this to your main branch
+      - main
+    paths:
+      - 'src/**'
 
 jobs:
   build-and-publish:
@@ -22,7 +24,7 @@ jobs:
       - name: Build and Publish Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .  # The build context, where your Dockerfile is located.
-          file: Dockerfile  # Path to your Dockerfile.
+          context: .
+          file: Dockerfile
           push: true
-          tags: petretiandrea/beaesthetic-analysis:latest  # Replace with your image name.
+          tags: petretiandrea/beaesthetic-analysis:latest

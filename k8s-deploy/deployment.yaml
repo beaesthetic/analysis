@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: beaesthetic-analysis-normalize
+spec:
+  schedule: "0 * * * *"  # Example: Run every hour
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: beaesthetic-analysis-normalize
+              image: petretiandrea/beaesthetic-analysis:latest
+              env:
+                - name: MONGODB_URI
+                  valueFrom:
+                    secretKeyRef:
+                      name: mongodb-secret
+                      key: mongodb-uri
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /secrets/google-service-account.json
+              volumeMounts:
+                - name: google-service-account-secret
+                  mountPath: /secrets
+                  readOnly: true
+          volumes:
+            - name: google-service-account-secret
+              secret:
+                secretName: google-service-account-secret

@@ -8,6 +8,7 @@ spec:
     spec:
       template:
         spec:
+          restartPolicy: "OnFailure"
           containers:
             - name: beaesthetic-analysis-normalize
               image: petretiandrea/beaesthetic-analysis:latest

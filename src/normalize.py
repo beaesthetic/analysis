@@ -88,7 +88,7 @@ if __name__ == "__main__":
         collection="appointments",
         csv_target_file="./export.csv"
     )
-    normalize_df = normalize(args.appointments_csv)
+    normalize_df = normalize(export_csv)
     save_to_google_sheet(
         service_account_path=args.service_account,
         sheet_id=args.sheet_id,

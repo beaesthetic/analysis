@@ -1,4 +1,4 @@
-FROM python:alpine3.18 AS runtime
+FROM python:3.10-alpine3.18 AS runtime
 
 COPY src/normalize.py .
 COPY requirements.txt .

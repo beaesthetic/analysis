@@ -3,8 +3,8 @@ import os
 
 import pandas as pd
 
-from src.google_sheet import save_to_google_sheet
-from src.mongo_dump import export_mongo_collection
+from google_sheet import save_to_google_sheet
+from mongo_dump import export_mongo_collection
 
 _TITLE_MAPPINGS = {
     r'\bsopr\b': "sopracciglia",

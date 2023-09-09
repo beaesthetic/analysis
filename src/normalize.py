@@ -1,4 +1,10 @@
+import argparse
+import os
+
 import pandas as pd
+
+from src.google_sheet import save_to_google_sheet
+from src.mongo_dump import export_mongo_collection
 
 _TITLE_MAPPINGS = {
     r'\bsopr\b': "sopracciglia",
@@ -44,7 +50,7 @@ def remove_extra_white_spaces(colum):
     return colum.str.replace(r'\s+', ' ', regex=True).str.strip()
 
 
-def main(input_file_path: str):
+def normalize(input_file_path: str) -> pd.DataFrame:
     df = pd.read_csv(input_file_path)
 
     # lower cases and replace with mappings
@@ -64,9 +70,28 @@ def main(input_file_path: str):
     # Count the distinct values in the 'title' column
     distinct_count = df['title'].nunique()
     print("Distinct Count:", distinct_count)
-
-
+    return df
 
 
 if __name__ == "__main__":
-    main("../dataset/appointments.csv")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--connection-string", default=os.getenv("MONGO_CONNECTION_STRING"),
+                        help="MongoDB connection string")
+    parser.add_argument("--service-account", default=os.getenv("SERVICE_ACCOUNT"),
+                        help="Path to the Google service account JSON file")
+    parser.add_argument("--sheet-id", default=os.getenv("SHEET_ID"), help="Google Sheet ID")
+    args = parser.parse_args()
+
+    export_csv = export_mongo_collection(
+        connection_str=args.connection_string,
+        db="appointment",
+        collection="appointments",
+        csv_target_file="./export.csv"
+    )
+    normalize_df = normalize(args.appointments_csv)
+    save_to_google_sheet(
+        service_account_path=args.service_account,
+        sheet_id=args.sheet_id,
+        dataframe=normalize_df,
+        worksheet_name="normalized"
+    )

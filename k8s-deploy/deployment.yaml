@@ -12,12 +12,14 @@ spec:
             - name: beaesthetic-analysis-normalize
               image: petretiandrea/beaesthetic-analysis:latest
               env:
-                - name: MONGODB_URI
+                - name: SHEET_ID
+                  value: "1X1sjRmDm2WEsb0vu4xqiqc59BNHz6G5Dbh7HZJswXq0"
+                - name: MONGO_CONNECTION_STRING
                   valueFrom:
                     secretKeyRef:
-                      name: mongodb-secret
-                      key: mongodb-uri
-                - name: GOOGLE_APPLICATION_CREDENTIALS
+                      name: mongodb-credentials
+                      key: MONGO_DB_URI_APPOINTMENT
+                - name: SERVICE_ACCOUNT
                   value: /secrets/google-service-account.json
               volumeMounts:
                 - name: google-service-account-secret
@@ -26,4 +28,4 @@ spec:
           volumes:
             - name: google-service-account-secret
               secret:
-                secretName: google-service-account-secret
+                secretName: beaesthetic-analysis-service-account

@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: beaesthetic-analysis-normalize
 spec:
-  schedule: "0 * * * *"  # Example: Run every hour
+  schedule: "0 0 * * *"  # Example: Run every hour
   jobTemplate:
     spec:
       template:

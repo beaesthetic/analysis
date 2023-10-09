@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: beaesthetic-analysis-normalize
+  namespace: beaesthetic
 spec:
   schedule: "0 0 * * *"  # Example: Run every hour
   jobTemplate:
